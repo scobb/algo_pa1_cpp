@@ -1,17 +1,31 @@
-#include "tic.h"
-#include "tac.h"
+#include "graph.h"
 #include <vector>
 #include <string>
+#include <map>
+#include <fstream>
 
 class Parser{
+
 private:
-    std::vector<Tic> tics;
-    std::vector<Tac> tacs;
+    std::vector<Graph*> graphs;
     std::string filename;
-public:
-    Parser(std::string &filename) : filename(filename) {
-        tics = std::vector<Tic>();
-        tacs = std::vector<Tac>();
-    }
+    void parseGraph(std::ifstream &in_file);
     void parse();
+public:
+    void process();
+    void findAllMatchings(Graph graph);
+    std::vector<Graph *> const &getGraphs() const {
+        return graphs;
+    }
+
+    Parser(std::string &filename) : filename(filename) {
+        parse();
+    }
+
+    virtual ~Parser() {
+        for (Graph *graph: graphs) {
+            delete graph;
+        }
+    }
+
 };

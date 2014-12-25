@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _TAC_H
+#define _TAC_H
 
 class Tac {
 private:
@@ -14,6 +15,7 @@ public:
     }
 
 public:
-    Tac(int id, int weight) : id(id), weigth(weigth) {
+    Tac(int id, int weight) : id(id), weight(weight) {
     }
 };
+#endif

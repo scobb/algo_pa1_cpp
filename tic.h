@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _TIC_H
+#define _TIC_H
 
 class Tic{
 
@@ -25,3 +26,4 @@ public:
     Tic(int id, int min, int max, int weight) : id(id), min(min), max(max), weight(weight) {
     }
 };
+#endif
