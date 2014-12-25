@@ -2,18 +2,18 @@
 
 class Tac {
 private:
-    int id, weigth;
+    int id, weight;
 
 public:
     int getId() const {
         return id;
     }
 
-    int getWeigth() const {
-        return weigth;
+    int getWeight() const {
+        return weight;
     }
 
 public:
-    Tac(int id, int weigth) : id(id), weigth(weigth) {
+    Tac(int id, int weight) : id(id), weigth(weigth) {
     }
 };
