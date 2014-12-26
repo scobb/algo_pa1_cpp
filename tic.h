@@ -42,5 +42,13 @@ public:
     Tic(int id, int min, int max, int weight) : id(id), min(min), max(max), weight(weight) {
         free = true;
     }
+
+    bool operator<(const Tic& other) {
+        if (this->max != other.max){
+            return this->max < other.max;
+        } else {
+            return this->id < other.id;
+        }
+    }
 };
 #endif

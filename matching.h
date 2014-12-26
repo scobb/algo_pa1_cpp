@@ -2,6 +2,7 @@
 #define _MATCHING_H
 
 #include <vector>
+#include <algorithm>
 #include "edge.h"
 
 class Matching {

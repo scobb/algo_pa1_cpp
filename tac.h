@@ -33,5 +33,13 @@ public:
     Tac(int id, int weight) : id(id), weight(weight) {
         free = true;
     }
+
+    bool operator<(const Tac& other) {
+        return this->id < other.id;
+    }
+
+    bool operator!=(const Tac& other) {
+        return this->id != other.id;
+    }
 };
 #endif

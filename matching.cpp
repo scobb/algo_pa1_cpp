@@ -8,7 +8,9 @@ bool operator<(const Matching& left, const Matching& right)
 std::ostream& operator<<(std::ostream& os, const Matching& matching)
 {
     std::string prefix = "";
-    for (Edge edge: matching.getEdges()){
+    std::vector<Edge> output = matching.getEdges();
+    std::sort(output.begin(), output.end());
+    for (Edge edge: output){
         os << prefix << edge.getTic()->getId() << ":" << edge.getTac()->getId();
         prefix = " ";
     }

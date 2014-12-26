@@ -30,5 +30,6 @@ public:
 };
 
 std::ostream& operator<<(std::ostream& os, const Edge& e);
+bool operator<(const Edge& left, const Edge& right);
 
 #endif
