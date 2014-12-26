@@ -18,9 +18,6 @@ void Parser::parseGraph(ifstream &in_file) {
     unsigned long num_tics = strtoul(u_and_v[0].c_str(), NULL, 0);
     unsigned long num_tacs = strtoul(u_and_v[1].c_str(), NULL, 0);
 
-    cout << "num_tics: " << num_tics << endl;
-    cout << "num_tacs: " << num_tacs << endl;
-
     // create objects for all tics
     for (int i = 0; i < num_tics; i++) {
         getline(in_file, line);
@@ -38,8 +35,6 @@ void Parser::parseGraph(ifstream &in_file) {
         tacs.push_back(aTac);
         tac_map[aTac->getId()] = aTac;
     }
-    cout << "tics.size(): " << tics.size() << endl;
-    cout << "tacs.size(): " << tacs.size() << endl;
 
     // populate our graph with vectors, maps we've made
     graph->setTacs(tacs);
@@ -47,10 +42,6 @@ void Parser::parseGraph(ifstream &in_file) {
     graph->setTac_map(tac_map);
     graph->setTic_map(tic_map);
     graph->createEdges();
-
-    for (Edge* e: graph->getEdges()){
-        cout << "An edge exists between tic " << e->getTic()->getId() << " and tac " << e->getTac()->getId() << endl;
-    }
 
     // add graph to the parser's list
     graphs.push_back(graph);
@@ -65,7 +56,6 @@ void Parser::parse() {
         int num_graphs;
         getline(in_file, line);
         num_graphs = stoi(line);
-        cout << "num_graphs: " << num_graphs << endl;
         for (int i = 0; i < num_graphs; i++) {
             parseGraph(in_file);
         }
@@ -76,17 +66,45 @@ void Parser::parse() {
 }
 
 void Parser::process() {
-    cout << "In process. graphs.size(): " << graphs.size() << endl;
     for (Graph* g: graphs){
-        cout << "tics.size(): " << g->getTics().size() << endl;
-        for (Tic* tic: g->getTics()){
-            cout << "tic id: " << tic->getId() << endl;
+        findAllMatchings(*g, Matching());
+        vector<Matching> sortedMatchings = g->getMatchings();
+        sort(sortedMatchings.end(), sortedMatchings.begin());
+        cout << sortedMatchings.size() << endl;
+        for (Matching m: sortedMatchings) {
+            cout << m;
         }
     }
 
 }
+void Parser::findAllMatchings(Graph graph, Matching matching) {
+    if (graph.getEdges().size() == 0) {
+        vector<Matching> matchings = graph.getMatchings();
+        matchings.push_back(matching);
+        cout << "Adding matching: " << matching << endl;
+        graph.setMatchings(matchings);
+        return;
+    }
+    vector<Edge*> edges = graph.getEdges();
+    Edge* e = edges.back();
+    edges.pop_back();
+    graph.setEdges(edges);
+    map<int, Tic*> tic_map = graph.getTic_map();
+    map<int, Tac*> tac_map = graph.getTac_map();
+    Tic* tic = e->getTic();
+    Tac* tac = e->getTac();
 
-void Parser::findAllMatchings(Graph graph) {
+    // leave recursive call
+    findAllMatchings(graph, matching);
+    if (tic_map[tic->getId()]->isFree() && tac_map[tac->getId()]->isFree()) {
+        tic_map[tic->getId()]->setFree(false);
+        tac_map[tac->getId()]->setFree(false);
+        graph.setTic_map(tic_map);
+        graph.setTac_map(tac_map);
+        matching.addEdge(Edge(tic, tac));
 
+        // take recursive call
+        findAllMatchings(graph, matching);
+    }
 
 }
