@@ -65,6 +65,9 @@ void Parser::parse() {
 }
 
 void Parser::output(vector<Matching> matchings) {
+    string out_file_path = filename.replace(filename.length()-2, filename.length(), "out");
+    fstream out_file;
+    out_file.open(out_file_path, fstream::out);
     sort(matchings.rbegin(), matchings.rend());
     if (matchings.size()) {
         int max_cardinality = matchings[0].getEdges().size();
@@ -77,10 +80,11 @@ void Parser::output(vector<Matching> matchings) {
     while (matchings.back().getWeight() != max_weight) {
         matchings.pop_back();
     }
-    cout << matchings.size() << endl;
+    out_file << matchings.size() << endl;
     for (Matching m: matchings){
-        cout << m << endl;
+        out_file << m << endl;
     }
+    out_file.close();
 
 }
 
