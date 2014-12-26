@@ -32,6 +32,13 @@ public:
     }
 
 public:
+    Tic() {
+        id = -1;
+        min = -1;
+        max = -1;
+        weight = -1;
+        free = false;
+    }
     Tic(int id, int min, int max, int weight) : id(id), min(min), max(max), weight(weight) {
         free = true;
     }

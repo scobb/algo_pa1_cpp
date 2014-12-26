@@ -20,16 +20,24 @@ public:
         edges.push_back(edge);
     }
 
-    bool byWeight (Matching& other) {
-        int this_weight = 0;
-        int other_weight = 0;
-        for (Edge edge: this->edges) {
-            this_weight += edge.getWeight();
+    int getWeight() const {
+        int weight = 0;
+        for (Edge e: edges) {
+            weight += e.getWeight();
         }
-        for (Edge edge: other.edges) {
-            other_weight += edge.getWeight();
-        }
-        return this_weight < other_weight;
+        return weight;
+    }
+
+
+
+    Matching& operator+=(const Matching& other) {
+        std::vector<Edge> new_edges;
+        new_edges.reserve(this->edges.size() + other.edges.size());
+        new_edges.insert(new_edges.end(), this->edges.begin(), this->edges.end());
+        new_edges.insert(new_edges.end(), other.edges.begin(), other.edges.end());
+        this->edges = new_edges;
+        return *this;
+
     }
 
     friend std::ostream& operator<<(std::ostream& os, const Matching& matching);
@@ -37,5 +45,6 @@ public:
 
 std::ostream& operator<<(std::ostream& os, const Matching& matching);
 bool operator<(const Matching& left, const Matching& right);
+bool byWeight(const Matching& left, const Matching& right);
 
 #endif

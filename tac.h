@@ -25,6 +25,11 @@ public:
     }
 
 public:
+    Tac() {
+        id = -1;
+        weight = -1;
+        free = false;
+    }
     Tac(int id, int weight) : id(id), weight(weight) {
         free = true;
     }

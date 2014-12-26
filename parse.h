@@ -14,9 +14,10 @@ private:
     std::string filename;
     void parseGraph(std::ifstream &in_file);
     void parse();
+    void output(std::vector<Matching>);
 public:
     void process();
-    void findAllMatchings(Graph graph, Matching matching);
+    std::vector<Matching> findAllMatchings(Graph graph, Matching matching, std::vector<Matching>);
     std::vector<Graph *> const &getGraphs() const {
         return graphs;
     }
@@ -27,16 +28,6 @@ public:
 
     virtual ~Parser() {
         for (Graph *graph: graphs) {
-            std::cout << "In destructor." << std::endl;
-            for (Tic* aTic: graph->getTics()) {
-                delete aTic;
-            }
-            for (Tac* aTac: graph->getTacs()) {
-                delete aTac;
-            }
-            for (Edge* anEdge: graph->getEdges()){
-                delete anEdge;
-            }
             delete graph;
         }
     }
