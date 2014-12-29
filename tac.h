@@ -42,4 +42,5 @@ public:
         return this->id != other.id;
     }
 };
+//bool operator<(const Tac& left, const Tac& right);
 #endif
