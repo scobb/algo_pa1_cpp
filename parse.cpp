@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include "parse.h"
 #include "split.h"
 
@@ -70,7 +71,7 @@ void Parser::output(vector<Matching> matchings) {
     out_file.open(out_file_path, fstream::out);
     sort(matchings.rbegin(), matchings.rend());
     if (matchings.size()) {
-        int max_cardinality = matchings[0].getEdges().size();
+        unsigned long max_cardinality = matchings[0].getEdges().size();
         while (matchings.back().getEdges().size() != max_cardinality) {
             matchings.pop_back();
         }
@@ -80,9 +81,18 @@ void Parser::output(vector<Matching> matchings) {
     while (matchings.back().getWeight() != max_weight) {
         matchings.pop_back();
     }
-    out_file << matchings.size() << endl;
+    vector<string> matchingStrings = vector<string>();
     for (Matching m: matchings){
-        out_file << m << endl;
+        ostringstream matchingOss;
+        matchingOss << m << endl;
+        matchingStrings.push_back(matchingOss.str());
+    }
+    sort(matchingStrings.begin(), matchingStrings.end());
+
+
+    out_file << matchings.size() << endl;
+    for (string mString: matchingStrings){
+        out_file << mString;
     }
     out_file.close();
 
