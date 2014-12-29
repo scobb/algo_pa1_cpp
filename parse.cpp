@@ -65,10 +65,7 @@ void Parser::parse() {
     }
 }
 
-void Parser::output(vector<Matching> matchings) {
-    string out_file_path = filename.replace(filename.length()-2, filename.length(), "out");
-    fstream out_file;
-    out_file.open(out_file_path, fstream::out);
+void Parser::output(vector<Matching> matchings, fstream* out_file) {
     sort(matchings.rbegin(), matchings.rend());
     if (matchings.size()) {
         unsigned long max_cardinality = matchings[0].getEdges().size();
@@ -90,19 +87,25 @@ void Parser::output(vector<Matching> matchings) {
     sort(matchingStrings.begin(), matchingStrings.end());
 
 
-    out_file << matchings.size() << endl;
+    *out_file << matchings.size() << endl;
     for (string mString: matchingStrings){
-        out_file << mString;
+        *out_file << mString;
     }
-    out_file.close();
+    out_file->close();
 
 }
 
 void Parser::process() {
+    string out_file_path = filename;
+    out_file_path.replace(filename.length()-2, filename.length(), "out");
+    fstream out_file;
+    out_file.open(out_file_path, fstream::out);
     for (Graph* g: graphs){
         vector<Matching> matchings = findAllMatchings(*g, Matching(), vector<Matching>());
-        output(matchings);
+        output(matchings, &out_file);
+        out_file.open(out_file_path, fstream::app);
     }
+    out_file.close();
 }
 vector<Matching> Parser::findAllMatchings(Graph graph, Matching matching, vector<Matching> matchings) {
     if (graph.getEdges().size() == 0) {

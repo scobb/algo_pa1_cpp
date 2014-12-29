@@ -14,7 +14,7 @@ private:
     std::string filename;
     void parseGraph(std::ifstream &in_file);
     void parse();
-    void output(std::vector<Matching>);
+    void output(std::vector<Matching>, std::fstream*);
 public:
     void process();
     std::vector<Matching> findAllMatchings(Graph graph, Matching matching, std::vector<Matching>);
